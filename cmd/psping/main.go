@@ -14,8 +14,5 @@ var (
 func main() {
 	var targetInput TargetInput = TargetInput(os.Args[1])
 	destination := targetInput.NewDest()
-	//fmt.Println(destination.Hostname)
-	//fmt.Println(destination.Port)
-	//fmt.Println(destination.HasPort)
-	ping.TCPPing(destination, pingLimit, network)
+	ping.TCPPing(destination.Hostname, destination.Port, destination.IPv4Addr, network, pingLimit)
 }

@@ -25,10 +25,10 @@ func (i *TargetInput) NewDest() (Dest Dest) {
 		hostname = string(*i)[0:index]
 		port = string(*i)[index+1:]
 	}
-	targetIP, err := net.LookupHost(Dest.Hostname)
+	targetIP, err := net.LookupHost(hostname)
 	if err != nil {
-		fmt.Fprintf(os.Stderr, "Could not get IPs: %v\n", err)
-		os.Exit(1)
+		fmt.Println(os.Stderr, "Could not get IPs: %v\n", err.Error())
+		panic(err)
 	}
 	Dest.Hostname = hostname
 	Dest.HasPort = hasPort
