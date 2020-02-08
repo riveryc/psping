@@ -1,40 +1,21 @@
 package main
 
 import (
-    "fmt"
-    "net"
-    "os"
-    "time"
+	"github.com/riveryc/psping/pkg/ping"
+	"math"
+	"os"
 )
 
 var (
-    address string
-    network = "tcp"
+	network   = "tcp"
+	pingLimit = math.MaxInt64
 )
 
-
 func main() {
-    i := 0
-    targetIP, err := net.LookupHost(target)
-    if err != nil {
-        fmt.Fprintf(os.Stderr, "Could not get IPs: %v\n", err)
-        os.Exit(1)
-    }
-    fmt.Printf("PING %s (%s) on port %s\n", target, targetIP[0], port) //TODO: pick first IPV4 address
-    for {
-        time.Sleep(1 * time.Second)
-        now := time.Now()
-        connDial, err := net.DialTimeout(network, address, 5 * time.Second)
-        if err != nil {
-            // handle error
-            fmt.Println(err.Error())
-            continue
-        }
-        localAddrPort := connDial.LocalAddr().String()
-        remoteAddrPort := connDial.RemoteAddr().String()
-        done := time.Now()
-        latency := done.Sub(now)
-        fmt.Printf("dial %s %s: from %s tcp_seq=%d time=%d ms\n", network, remoteAddrPort, localAddrPort, i, latency.Milliseconds())
-        i = i + 1
-    }
+	var targetInput TargetInput = TargetInput(os.Args[1])
+	destination := targetInput.NewDest()
+	//fmt.Println(destination.Hostname)
+	//fmt.Println(destination.Port)
+	//fmt.Println(destination.HasPort)
+	ping.TCPPing(destination, pingLimit, network)
 }
