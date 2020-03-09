@@ -33,9 +33,9 @@ func TCPPing(hostname, port, IPv4Addr, network string) {
 	exitReport(hostname, port, network, &i, &r)
 	for {
 		time.Sleep(1 * time.Second)
-		i = i + 1
 		now := time.Now()
 		connDial, err := net.DialTimeout(network, hostname+":"+port, 5*time.Second)
+		i++
 		if err != nil {
 			// handle error
 			fmt.Println(err.Error())
@@ -47,5 +47,6 @@ func TCPPing(hostname, port, IPv4Addr, network string) {
 		latency := done.Sub(now)
 		fmt.Printf("dial %s %s: from %s tcp_seq=%d time=%d ms\n", network, remoteAddrPort, localAddrPort, i, latency.Milliseconds())
 		r = r + 1
+		connDial.Close()
 	}
 }
