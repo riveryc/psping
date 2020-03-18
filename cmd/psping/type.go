@@ -27,7 +27,7 @@ func (i *TargetInput) NewDest() (Dest Dest) {
 	}
 	targetIP, err := net.LookupHost(hostname)
 	for ip := range targetIP {
-		fmt.Println(ip)
+		fmt.Println(targetIP[ip])
 	}
 	if err != nil {
 		fmt.Println(os.Stderr, "Could not get IPs: %v\n", err.Error())
